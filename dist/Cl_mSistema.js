@@ -1,6 +1,7 @@
 import Cl_mCampaña from './Cl_mCampaña.js';
 import Cl_mAporte from './Cl_mAporte.js';
 import storage from './tools/storage.js';
+import initialData from './data.initial.js';
 class Cl_mSistema {
     constructor() {
         this._campañas = [];
@@ -11,6 +12,13 @@ class Cl_mSistema {
                 const parsed = JSON.parse(raw);
                 if (Array.isArray(parsed)) {
                     this._campañas = parsed.map((c) => Cl_mCampaña.fromJSON(c));
+                }
+            }
+            else {
+                // No hay datos: poblar con datos iniciales y guardar
+                if (Array.isArray(initialData) && initialData.length > 0) {
+                    this._campañas = initialData.map((c) => Cl_mCampaña.fromJSON(c));
+                    this.guardar();
                 }
             }
         }
